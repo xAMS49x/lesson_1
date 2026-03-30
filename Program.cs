@@ -19,8 +19,7 @@
         Console.WriteLine("Enter the number b: ");
         int b = Convert.ToInt32(Console.ReadLine());
         
-        double result = a * Math.Pow(b, 2);
-        Console.WriteLine($"Your result is:  {result}");
+        Console.WriteLine($"Your result is:  {a * Math.Pow(b,2)}");
 
             break;
         
@@ -46,8 +45,7 @@
             Console.WriteLine("12% of number calculator. Enter your number: ");
             double number = Convert.ToInt32(Console.ReadLine());
             
-            double percentage = (number * 12) / 100;
-            Console.WriteLine($"12% of {number} is: {percentage}");
+            Console.WriteLine($"12% of {number} is: {(number * 12) / 100}");
 
             break;
         
@@ -55,19 +53,16 @@
         case 4:
             Console.WriteLine("Enter kilometer value: ");
             double kilometer = double.Parse(Console.ReadLine());
-            double miles = kilometer * 0.6213712; 
             
             Console.WriteLine("Enter kilogram value: ");
             double kgs = double.Parse(Console.ReadLine());
-            double lbs = kgs * 2.2046226;
             
             Console.WriteLine("Enter liter value: ");
             double liter = double.Parse(Console.ReadLine());
-            double gallons = liter * 0.2641721;
             
-            Console.WriteLine($"\n{kilometer} kilometers is: {miles} miles");
-            Console.WriteLine($"{kgs} kgs is: {lbs} lbs");
-            Console.WriteLine($"{liter} liters is: {gallons} gallons");
+            Console.WriteLine($"\n{kilometer} kilometers is: {kilometer * 0.6213712} miles");
+            Console.WriteLine($"{kgs} kgs is: {kgs * 2.2046226} lbs");
+            Console.WriteLine($"{liter} liters is: {liter * 0.2641721} gallons");
             
             break;
         // Task 5
@@ -85,7 +80,7 @@
             Console.WriteLine("\nIs that right? (y/n)");
             string choice = Console.ReadLine();
 
-            switch (choice)
+            switch (choice) 
             {
                 case "y":
                     if (age <= 15)
