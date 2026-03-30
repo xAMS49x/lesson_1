@@ -75,7 +75,7 @@
             int date = int.Parse(Console.ReadLine());
             
             int age = DateTime.Now.Year - date;
-            Console.WriteLine($"Welcome, {name}! You are {age} years old.");
+            Console.WriteLine($"Welcome, {name}! You are ~{age} years old.");
             
             Console.WriteLine("\nIs that right? (y/n)");
             string choice = Console.ReadLine();
