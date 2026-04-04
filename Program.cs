@@ -1,111 +1,206 @@
-﻿class Program
+﻿using System.Runtime.InteropServices.JavaScript;
+
+class Program
 {
     
     static void Main()
-    {
-        // Console.ForegroundColor = ConsoleColor.Black;
-        // Console.BackgroundColor = ConsoleColor.DarkRed;
-        Console.WriteLine("Welcome! Pick the task you want to see (1-5): ");
-        int TaskNumber = Convert.ToInt32(Console.ReadLine());
-        
-        switch(TaskNumber)
+    {   // Intro
+        Console.WriteLine("Welcome again! Pick the task you want to execute (1-4): ");
+        short choice = short.Parse(Console.ReadLine());
+        if (choice > 4 || choice < 1)
         {
-            
-        case 1: 
-        // Task 1
-        Console.WriteLine("Enter the number a: ");
-        int a = Convert.ToInt32(Console.ReadLine());
-        
-        Console.WriteLine("Enter the number b: ");
-        int b = Convert.ToInt32(Console.ReadLine());
-        
-        Console.WriteLine($"Your result is:  {a * Math.Pow(b,2)}");
-
-            break;
-        
-        
-        // Task 2
-        case 2:
-        Console.WriteLine("Count yo days");
-        int days = Convert.ToInt32(Console.ReadLine());
-        int weeks = 0;
-        
-        while (days >= 7)
-        {
-            days -= 7;
-            weeks++;
+            Console.WriteLine("Error: non-existent value");
+            return;
         }
-        Console.WriteLine($"Yo days: weeks: {weeks}, days: {days}");
 
-            break;
+        switch (choice)
+        {
+            case 1: 
+                
+                // Task 1
+                Console.WriteLine("Greetings. Enter your points to determine your grade (0-100)");
+                int points = Convert.ToInt32(Console.ReadLine());
+                if (points > 100 || points < 0)
+                {
+                    Console.WriteLine("Please, ENTER A VALID VALUE");
+                    return;
+                }
         
+                if (points > 90 && points <= 100)
+                {
+                    Console.WriteLine("Grade: A");
+                }
         
-        // Task 3
-        case 3:
-            Console.WriteLine("12% of number calculator. Enter your number: ");
-            double number = Convert.ToInt32(Console.ReadLine());
-            
-            Console.WriteLine($"12% of {number} is: {(number * 12) / 100}");
-
-            break;
+                else if (points > 70 && points <= 89)
+                {
+                    Console.WriteLine("Grade: B");
+                }
         
-        // Task 4
-        case 4:
-            Console.WriteLine("Enter kilometer value: ");
-            double kilometer = double.Parse(Console.ReadLine());
+                else if (points > 50 && points <= 69)
+                {
+                    Console.WriteLine("Grade: C");
+                }
+        
+                else if (points <= 50)
+                {
+                    Console.WriteLine("Grade: D");
+                }
+                break;
             
-            Console.WriteLine("Enter kilogram value: ");
-            double kgs = double.Parse(Console.ReadLine());
-            
-            Console.WriteLine("Enter liter value: ");
-            double liter = double.Parse(Console.ReadLine());
-            
-            Console.WriteLine($"\n{kilometer} kilometers is: {kilometer * 0.6213712} miles");
-            Console.WriteLine($"{kgs} kgs is: {kgs * 2.2046226} lbs");
-            Console.WriteLine($"{liter} liters is: {liter * 0.2641721} gallons");
-            
-            break;
-        // Task 5
-        case 5:
-            
-            Console.WriteLine("What is your name?");
-            string name = Console.ReadLine();
-            
-            Console.Write("Enter your year of birth: ");
-            int date = int.Parse(Console.ReadLine());
-            
-            int age = DateTime.Now.Year - date;
-            Console.WriteLine($"Welcome, {name}! You are ~{age} years old.");
-            
-            Console.WriteLine("\nIs that right? (y/n)");
-            string choice = Console.ReadLine();
-
-            switch (choice) 
-            {
-                case "y":
-                    if (age <= 15)
+            case 2:
+                
+                // Task 2
+                Console.WriteLine("Hello and welcome to Absolute Cinema! We need your age to calculate price for the ticket: ");
+                int age = Convert.ToInt32(Console.ReadLine());
+                    if (age > 100 || age < 0)
                     {
-                        Console.Write("yooo,go back to kindergarten");
+                        Console.WriteLine("Please, ENTER A VALID VALUE");
+                        return;
                     }
 
-                    if (age > 16)
-                    {
-                        Console.Write("I am comfortable talking to you then");
-                    }
+                if (age < 6 || age > 65)
+                {
+                    Console.WriteLine("The ticket is free, enjoy!");
+                }
+                
+                else if (age >= 6 && age <= 12)
+                {
+                    Console.WriteLine("The ticket will be 50₴");
+                }
+                
+                else if (age > 12 && age <= 17)
+                {
+                    Console.WriteLine("The ticket will be 80₴");
+                }
+                
+                else if (age > 17 && age <= 64)
+                {
+                    Console.WriteLine("The ticket will be 120₴");
+                }
+                break;
 
-                    if (age > 30)
+            case 3:
+
+                // Task 3
+                Console.WriteLine("Enter a month number you want to find info about: ");
+                string inMonth = Console.ReadLine();
+
+                if (int.TryParse(inMonth, out int month))
+                {
+                    if (month < 1 || month > 12)
                     {
-                        Console.Write("Oh my god, what are you, a fossil? Holy hell, dinosaur, bro");
+                        Console.WriteLine("Please, ENTER A VALID VALUE");
+                        return;
                     }
                     
-                    break;
-                
-                case "n":
-                    Environment.Exit(0);
-                    break;
-            }
+                    string season = "";
+                    int days = 0;
+
+                    switch (month)
+                    {
+                        case 12:
+                        case 1:
+                        case 2:
+                            season = "Winter";
+                            break;
+
+                        case 3:
+                        case 4:
+                        case 5:
+                            season = "Spring";
+                            break;
+
+                        case 6:
+                        case 7:
+                        case 8:
+                            season = "Summer";
+                            break;
+
+                        case 9:
+                        case 10:
+                        case 11:
+                            season = "Autumn";
+                            break;
+                    }
+
+                    switch (month)
+                    {
+                        case 1:
+                        case 3:
+                        case 5:
+                        case 7:
+                        case 8:
+                        case 10:
+                        case 12:
+                            days = 31;
+                            break;
+
+                        case 4:
+                        case 6:
+                        case 9:
+                        case 11:
+                            days = 30;
+                            break;
+
+                        case 2:
+                            days = 28;
+                            break;
+                    }
+
+                    Console.WriteLine($"This month is in {season} season and has {days} days.");
+                }
+                else
+                {
+                    Console.WriteLine("Error: Data you have entered is NOT a number");
+                }
+                break;
             
-            break;
+            case 4:
+                
+                // Task 4
+                Console.WriteLine("Greetings, you are using version 0.0.1 of A-B Signing Gateway.");
+                Console.WriteLine("Enter your login (email):");
+                string login = Console.ReadLine();
+                
+                Console.WriteLine("Enter your password: ");
+                string password = Console.ReadLine();
+                
+                Console.WriteLine("Enter year of your birth: ");
+                int year = Convert.ToInt32(Console.ReadLine());
+
+                int age2 = DateTime.Now.Year - year;
+                
+                if (age2 > 100 || age2 < 0)
+                {
+                    Console.WriteLine("Please, ENTER A VALID VALUE");
+                    return;
+                }
+
+                if (age2 < 18)
+                {
+                    Console.WriteLine("You MUST be above 18 to use our services.");
+                }
+                
+                Console.WriteLine("Good! You are registered. \n Log right back in. \n Login: ");
+                string loginCheck = Console.ReadLine();
+                
+                Console.WriteLine("Enter your password: ");
+                string passwordCheck = Console.ReadLine();
+
+                if (loginCheck != login)
+                {
+                    Console.WriteLine("Access Denied. Wrong email.");
+                    
+                    if (passwordCheck != password)
+                    {
+                        Console.WriteLine("Access Denied. Wrong password.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Login successful.");
+                }
+                break;
         }
     }
 }
