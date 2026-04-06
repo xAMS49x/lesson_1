@@ -190,11 +190,11 @@ class Program
 
                 if (loginCheck != login)
                 {
-                    Console.WriteLine("Access Denied. Wrong email.");
+                    Console.WriteLine("Access Denied.");
                     
                     if (passwordCheck != password)
                     {
-                        Console.WriteLine("Access Denied. Wrong password.");
+                        Console.WriteLine("Access Denied.");
                     }
                 }
                 else
