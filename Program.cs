@@ -25,10 +25,10 @@ class Program
                     Console.WriteLine("Please, ENTER A VALID VALUE");
                     return;
                 }
-        
-                if (points > 90 && points <= 100)
+                
+                if (points <= 50)
                 {
-                    Console.WriteLine("Grade: A");
+                    Console.WriteLine("Grade: D");
                 }
         
                 else if (points > 70 && points <= 89)
@@ -40,11 +40,12 @@ class Program
                 {
                     Console.WriteLine("Grade: C");
                 }
-        
-                else if (points <= 50)
+                
+                else
                 {
-                    Console.WriteLine("Grade: D");
+                    Console.WriteLine("Grade: A");
                 }
+                
                 break;
             
             case 2:
