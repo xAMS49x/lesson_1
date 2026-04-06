@@ -191,12 +191,13 @@ class Program
                 if (loginCheck != login)
                 {
                     Console.WriteLine("Access Denied.");
-                    
-                    if (passwordCheck != password)
-                    {
-                        Console.WriteLine("Access Denied.");
-                    }
                 }
+                
+                else if (passwordCheck != password)
+                {
+                    Console.WriteLine("Access Denied.");
+                }
+                
                 else
                 {
                     Console.WriteLine("Login successful.");
