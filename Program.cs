@@ -1,278 +1,334 @@
-﻿class Program
+﻿class DicePlayer(string name, ConsoleColor color)
 {
-    public static void showError(string msg)
-    {
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine("An error has occured: " + msg);
-        Console.ResetColor();
-    }
+    public string Name { get; set; } = name;
+    public int Score { get; set; } = 0;
 
-    public static string GetString(string msg)
-    {
-        Console.WriteLine(msg);
-        return Console.ReadLine();
-    }
+    public ConsoleColor Color { get; set; } = color;
 
-    public static int GetInt(string msg)
-    {
-        return Convert.ToInt32(GetString(msg));
-    }
+    private static readonly Random _random = new();
 
-    public static double GetDouble(string msg)
+    public static int RollDice()
     {
-        return Convert.ToDouble(GetString(msg));
+        return _random.Next(1, 7);
     }
+}
 
-    public static byte GetBytes(string msg)
-    {
-        return Convert.ToByte(GetString(msg));
-    }
+class GameSettings
+{
+    public int Rounds { get; set; } = 3;
+    public int DicePerRoll { get; set; } = 1;
+}
 
-    public static bool ValidateStringLength(string text, int minLength, int maxLength)
+class Program
+{
+    static readonly List<DicePlayer> players = [];
+    static readonly ConsoleColor[] availableColors =
     {
-        if (text.Trim().Length < minLength || text.Trim().Length > maxLength)
+        ConsoleColor.Red,
+        ConsoleColor.Blue,
+        ConsoleColor.Green,
+        ConsoleColor.Yellow,
+        ConsoleColor.Cyan,
+        ConsoleColor.Magenta,
+        ConsoleColor.White
+    };
+    static readonly GameSettings settings = new();
+
+    static int GetNumberInput(string message, int min, int max)
+    {
+        while (true)
         {
-            return true;
-        }
+            Console.Clear();
+            Console.Write(message);
+            string? input = Console.ReadLine();
 
-        return false;
-    }
+            if (int.TryParse(input, out int value) && value >= min && value <= max)
+                return value;
 
-    public static bool ValidateRange(byte value, int min, int max)
-    {
-        if (value < min || value > max)
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-    public static int CoinFlip(string result)
-    {
-        var coinToss = new Random();
-        int roll = coinToss.Next(1, 1001);
-
-        switch (roll)
-        {
-            case <= 498:
-                result = "Heads";
-                return 3;
-
-            case <= 996:
-                result = "Tails";
-                return 1;
-
-            default:
-                result = "Edge";
-                return 10;
+            Console.WriteLine($"Please enter a number between {min} and {max}.");
+            Thread.Sleep(1200);
         }
     }
 
     static void Main()
     {
-        byte task = GetBytes("Welcome back. Choose the task you want to see (1-3): ");
-        if (!ValidateRange(task, 1, 3))
+        bool running = true;
+
+        while (running)
         {
-            showError("No such task number.");
+            DrawMainMenu();
+            string? input = Console.ReadLine();
+
+            switch (input)
+            {
+                case "1":
+                    AddPlayer();
+                    break;
+                case "2":
+                    RemovePlayer();
+                    break;
+                case "3":
+                    StartMatch();
+                    break;
+                case "4":
+                    OpenSettings();
+                    break;
+                case "5":
+                    running = false;
+                    break;
+                default:
+                    ShowMessage("Invalid option.");
+                    break;
+            }
+        }
+    }
+
+    static void DrawMainMenu()
+    {
+        Console.Clear();
+        Console.WriteLine("=== DICE GAME MENU ===");
+        Console.WriteLine("1. Add player");
+        Console.WriteLine("2. Remove player");
+        Console.WriteLine("3. Start match");
+        Console.WriteLine("4. Settings");
+        Console.WriteLine("5. Exit");
+        Console.WriteLine();
+        Console.WriteLine($"Rounds: {settings.Rounds}");
+        Console.WriteLine($"Dice per roll: {settings.DicePerRoll}");
+        Console.WriteLine();
+        Console.WriteLine("Current players:");
+
+        if (players.Count == 0)
+        {
+            Console.WriteLine("  No players yet.");
+        }
+        else
+        {
+            for (int i = 0; i < players.Count; i++)
+            {
+                Console.ForegroundColor = players[i].Color;
+                Console.WriteLine($"  {i + 1}. {players[i].Name}");
+                Console.ResetColor();
+            }
+        }
+
+        Console.WriteLine();
+        Console.Write("Choose option: ");
+    }
+
+    static void OpenSettings()
+    {
+        bool inSettings = true;
+
+        while (inSettings)
+        {
+            Console.Clear();
+            Console.WriteLine("=== SETTINGS ===");
+            Console.WriteLine($"1. Change rounds        (current: {settings.Rounds})");
+            Console.WriteLine($"2. Change dice per roll (current: {settings.DicePerRoll})");
+            Console.WriteLine("3. Back");
+            Console.WriteLine();
+            Console.Write("Choose option: ");
+
+            string? input = Console.ReadLine();
+
+            switch (input)
+            {
+                case "1":
+                    settings.Rounds = GetNumberInput("Enter number of rounds (1-20): ", 1, 20);
+                    break;
+
+                case "2":
+                    settings.DicePerRoll = GetNumberInput("Enter dice per roll (1-4): ", 1, 4);
+                    break;
+
+                case "3":
+                    inSettings = false;
+                    break;
+
+                default:
+                    ShowMessage("Invalid option.");
+                    break;
+            }
+        }
+    }
+
+    static void AddPlayer()
+    {
+        Console.Clear();
+        Console.Write("Enter player name: ");
+        string? name = Console.ReadLine();
+
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            ShowMessage("Player name cannot be empty.");
             return;
         }
-        
-        switch (task)
+
+        ConsoleColor color = availableColors[players.Count % availableColors.Length];
+        players.Add(new DicePlayer(name, color));
+
+        ShowMessage($"Added player: {name}");
+    }
+
+    static void RemovePlayer()
+    {
+        Console.Clear();
+
+        if (players.Count == 0)
         {
-            // Task 1
-            case 1:
-
-                Console.WriteLine("Greetings, you are using version 0.0.2 of A-B Signing Gateway.");
-                string login = GetString("Enter your login(email): ");
-
-                if (login.Trim().Length < 8)
-                {
-                    showError("login must be at least 8 characters long.");
-                    return;
-                }
-
-                string password = GetString("Enter your password: ");
-
-                if (ValidateStringLength(password.Trim(), 7, 30))
-                {
-                    showError("password must be at least 8 characters long.");
-                    return;
-                }
-
-                int age = DateTime.Now.Year - GetInt("Enter year of your birth: ");
-
-                if (age > 105 || age < 0)
-                {
-                    showError("age value is invalid.");
-                    return;
-                }
-
-                if (age < 18)
-                {
-                    showError("you MUST be above 18 to use our services.");
-                    return;
-                }
-
-                string loginCheck = GetString("Good! You are registered. \n Log right back in. \n Login: ");
-
-                string passwordCheck = GetString("Enter your password: ");
-
-                if (loginCheck != login)
-                {
-                    showError("Access denied.");
-                }
-
-                else if (passwordCheck != password)
-                {
-                    showError("Access denied.");
-                }
-
-                else
-                {
-                    Console.WriteLine("Login successful.");
-                }
-
-                break;
-
-            // Task 2: Rock-paper-scissors
-            case 2:
-
-                Console.WriteLine("Hello and welcome to good old Rock, Paper, Scissors!");
-                string userName = GetString("Enter your username for game: ");
-                if (userName.Trim().Length < 1)
-                    showError("Username can't be empty!");
-
-
-                Console.WriteLine("Now, let's play!\nPlaying against CPU...");
-                byte userPoints = 0;
-                byte cpuPoints = 0;
-
-                for (int i = 0; i <= 10; i++)
-                {
-                    Console.WriteLine("Game stars");
-                    byte userChoice = GetBytes("Rock (1), paper (2) or scissors (3)?");
-                    if (!ValidateRange(userChoice, 1, 3))
-                    {
-                        showError("Make a valid choice!");
-                        return;
-                    }
-
-                    //CPU
-                    Random rand = new Random();
-                    var cpuChoice = (byte)rand.Next(1, 4);
-                    switch (cpuChoice)
-                    {
-                        case 1:
-                            Console.WriteLine("CPU chose Rock");
-                            break;
-                        case 2:
-                            Console.WriteLine("CPU chose Paper");
-                            break;
-                        case 3:
-                            Console.WriteLine("CPU chose Scissors");
-                            break;
-                    }
-
-                    //Game
-                    if (userChoice == cpuChoice)
-                        Console.WriteLine("Draw!");
-
-                    else if (
-                        (userChoice == 1 && cpuChoice == 2) ||
-                        (userChoice == 2 && cpuChoice == 3) ||
-                        (userChoice == 3 && cpuChoice == 1))
-                    {
-                        Console.WriteLine("You lost!");
-                        cpuPoints++;
-                    }
-
-                    else
-                    {
-                        Console.WriteLine("You won!");
-                        userPoints++;
-                    }
-
-                    Console.WriteLine($"Score:\n{userName} - {userPoints}\nCPU - {cpuPoints}");
-                }
-
-                if (userPoints > cpuPoints)
-                {
-                    Console.BackgroundColor = ConsoleColor.Green;
-                    Console.ForegroundColor = ConsoleColor.Black;
-                    Console.Write("Congratulations! You won!");
-                    Console.ResetColor();
-                }
-                else if (userPoints < cpuPoints)
-                {
-                    Console.BackgroundColor = ConsoleColor.Red;
-                    Console.ForegroundColor = ConsoleColor.Black;
-                    Console.Write("You're weak. I'm strong. And I win, toymaker!\n You lost.");
-                    Console.ResetColor();
-                }
-                else
-                {
-                    Console.Write("Tie!");
-                }
-
-                break;
-
-            // Task 3: Coin flip
-            case 3:
-
-                Console.WriteLine(
-                    "Wanna play one little game? Coin flip it is! Two players take turns tossing a coin. Heads worth 3 points, tails worth 1 and if coin lands on it's edge - it worth 10 points!");
-                string firstPlayer = GetString("Enter first player name: ");
-                if (ValidateStringLength(firstPlayer.Trim(), 1, 100))
-                {
-                    showError("Name can't be empty.");
-                    return;
-                }
-
-                string secondPlayer = GetString("Enter second player name: ");
-                if (ValidateStringLength(secondPlayer.Trim(), 1, 100))
-                {
-                    showError("Name can't be empty.");
-                    return;
-                }
-
-                // Game
-                byte firstPlayerPoints = 0;
-                byte secondPlayerPoints = 0;
-
-                for (int round = 1; round <= 5; round++)
-                {
-                    Console.WriteLine("Round " + round);
-                    string firstPlayerResult = null;
-                    var points1 = (byte)CoinFlip(firstPlayerResult);
-                    firstPlayerPoints += points1;
-                    Console.WriteLine($"{firstPlayer}: {firstPlayerResult} (+{points1} points.)");
-
-                    Console.WriteLine("Round " + round);
-                    string secondPlayerResult = null;
-                    var points2 = (byte)CoinFlip(secondPlayerResult);
-                    secondPlayerPoints += points2;
-                    Console.WriteLine($"{secondPlayer}: {secondPlayerResult} (+{points2} points.)");
-                }
-
-                Console.WriteLine(
-                    $"\n Results:\n {firstPlayer}: {firstPlayerPoints} points\n {secondPlayer}: {secondPlayerPoints} points");
-
-
-                if (firstPlayerPoints > secondPlayerPoints)
-                {
-                    Console.WriteLine($"{firstPlayer} have won!");
-                }
-                else if (secondPlayerPoints > firstPlayerPoints)
-                {
-                    Console.WriteLine($"{secondPlayer} have won!");
-                }
-                else
-                {
-                    Console.WriteLine("Both players drew!");
-                }
-
-                break;
+            ShowMessage("There are no players to remove.");
+            return;
         }
+
+        Console.WriteLine("Choose player to remove:");
+
+        for (int i = 0; i < players.Count; i++)
+        {
+            Console.ForegroundColor = players[i].Color;
+            Console.WriteLine($"{i + 1}. {players[i].Name}");
+            Console.ResetColor();
+        }
+
+        Console.Write("Number: ");
+        string? input = Console.ReadLine();
+
+        if (int.TryParse(input, out int index) && index >= 1 && index <= players.Count)
+        {
+            string removedName = players[index - 1].Name;
+            players.RemoveAt(index - 1);
+            ShowMessage($"Removed player: {removedName}");
+        }
+        else
+        {
+            ShowMessage("Invalid player number.");
+        }
+    }
+
+    static void StartMatch()
+    {
+        if (players.Count < 2)
+        {
+            ShowMessage("You need at least 2 players to start.");
+            return;
+        }
+
+        foreach (var player in players)
+        {
+            player.Score = 0;
+        }
+
+        for (int round = 1; round <= settings.Rounds; round++)
+        {
+            foreach (var player in players)
+            {
+                AnimateRoll(player, round);
+            }
+        }
+
+        DrawScoreboard(-1, "Match finished!");
+        ShowWinner();
+
+        Console.WriteLine();
+        Console.WriteLine("Press any key to return to menu...");
+        Console.ReadKey(true);
+    }
+
+    static void AnimateRoll(DicePlayer player, int round)
+    {
+        string[] frames = { "|", "/", "-", "\\" };
+
+        for (int i = 0; i < 10; i++)
+        {
+            DrawScoreboard(round, $"{player.Name} rolling... [{frames[i % frames.Length]}]");
+            Thread.Sleep(80);
+        }
+
+        List<int> rolls = new();
+
+        for (int i = 0; i < settings.DicePerRoll; i++)
+        {
+            rolls.Add(DicePlayer.RollDice());
+        }
+
+        int totalRoll = rolls.Sum();
+        player.Score += totalRoll;
+
+        string rollText = string.Join(", ", rolls);
+        DrawScoreboard(round, $"{player.Name} rolled: [{rollText}]  Total: +{totalRoll}");
+        Thread.Sleep(1200);
+    }
+
+    static void DrawScoreboard(int round, string status)
+    {
+        Console.Clear();
+
+        Console.WriteLine("=== MATCH ===");
+        if (round > 0)
+        {
+            Console.WriteLine($"Round: {round}");
+        }
+        Console.WriteLine();
+
+        Console.WriteLine("Scores:");
+        Console.WriteLine("-------------------------");
+
+        foreach (var player in players)
+        {
+            Console.ForegroundColor = player.Color;
+            Console.WriteLine($"{player.Name,-12} : {player.Score}");
+            Console.ResetColor();
+        }
+
+        Console.WriteLine("-------------------------");
+        Console.WriteLine();
+        Console.WriteLine(status);
+    }
+
+    static void ShowWinner()
+    {
+        int bestScore = int.MinValue;
+        List<DicePlayer> winners = new();
+
+        foreach (var player in players)
+        {
+            if (player.Score > bestScore)
+            {
+                bestScore = player.Score;
+                winners.Clear();
+                winners.Add(player);
+            }
+            else if (player.Score == bestScore)
+            {
+                winners.Add(player);
+            }
+        }
+
+        Console.WriteLine();
+
+        if (winners.Count == 1)
+        {
+            Console.ForegroundColor = winners[0].Color;
+            Console.WriteLine($"Winner: {winners[0].Name} with {winners[0].Score} points!");
+            Console.ResetColor();
+        }
+        else
+        {
+            Console.WriteLine("It's a draw between:");
+            foreach (var player in winners)
+            {
+                Console.ForegroundColor = player.Color;
+                Console.WriteLine($"- {player.Name} ({player.Score})");
+                Console.ResetColor();
+            }
+        }
+    }
+
+    static void ShowMessage(string message)
+    {
+        Console.WriteLine();
+        Console.WriteLine(message);
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey(true);
     }
 }
