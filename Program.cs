@@ -90,7 +90,7 @@ namespace Homework4
 
                     while (hero1.IsAlive && hero2.IsAlive)
                     {
-                        Log($"\nRound {roundSecondGame}!");
+                        Log($"\nRound {roundSecondGame}!\n");
 
                         hero1.AttackDefender(hero2, random);
 

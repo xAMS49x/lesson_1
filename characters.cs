@@ -51,23 +51,23 @@ public class Character
 
     public void AttackDefender(Character defender, Random random)
     {
-        Console.WriteLine($"{Name} атакує {defender.Name}");
+        Console.WriteLine($"{Name} attacks {defender.Name}\n");
 
-        // 1. Перевірка увороту
+        
         if (defender.TryDodge(random))
         {
             Console.WriteLine($"{defender.Name} evaded!");
             return;
         }
 
-        // 2. Перевірка критичного удару
+       
         int currentAttack = Attack;
         bool isCritical = random.Next(1, 101) <= CritChance;
 
         if (isCritical)
         {
             currentAttack = (int)(Attack * 1.5);
-            Console.WriteLine("Critical hit");
+            Console.WriteLine("Critical hit!");
         }
 
         int damage = currentAttack - defender.Defense;
@@ -77,7 +77,7 @@ public class Character
 
         defender.TakeDamage(damage);
 
-        Console.WriteLine($"{Name} have dealt {damage} damage to {defender.Name}");
+        Console.WriteLine($"{Name} have dealt {damage} damage to {defender.Name}\n");
     }
 
     private bool TryDodge(Random random)
