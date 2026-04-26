@@ -80,19 +80,19 @@ namespace Libraries
 
         public static void LogLine(string message)
         {
-            GetString(message);
+            Console.WriteLine(message);
             log.AppendLine($"<program> {message}");
         }
         
         public static void Log(string message)
         {
-            GetString(message);
-            log.AppendLine($"<program> {message}");
+            Console.Write(message);
+            log.Append(message);
         }
 
         public static string Ask(string prompt)
         {
-            GetString(prompt);
+            Console.WriteLine(prompt);
             log.Append($"<program> {prompt}");
 
             string input = Console.ReadLine()!;
@@ -106,11 +106,14 @@ namespace Libraries
         {
             log.AppendLine($"\nProcess finished with exit code {exitCode}");
 
+            string logDirectory = "/home/ams/RiderProjects/lesson_1(2)/logs";
             string fileName = $"log_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.txt";
-            string path = Path.Combine(Directory.GetCurrentDirectory(), fileName);
+            string path = Path.Combine(logDirectory, fileName);
 
             File.WriteAllText(path, log.ToString());
+            Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine($"\nLog saved to: {path}");
+            Console.ResetColor();
         }
     }
 }

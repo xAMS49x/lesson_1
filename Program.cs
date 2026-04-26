@@ -1,5 +1,6 @@
 ﻿using static Libraries.GetValidateLog;
 using static Libraries.TaskSpecific;
+using static Libraries.ArrayActions;
 
 namespace Homework4;
 
@@ -16,11 +17,10 @@ internal class Program
                 // Task 1
                 LogLine("Task: Array operations.\n Commencing the sequence...");
                 int[] sex = GetArray();
-                ShowArray(sex);
-
                 Array.Sort(sex);
                 Array.Reverse(sex);
-
+                ShowArray(sex);
+                
                 //operations
                 LogLine("\n \n============= Array operations =============");
                 int arraySum = 0;
@@ -29,7 +29,7 @@ internal class Program
                 Console.ForegroundColor = ConsoleColor.Green;
                 for (var i = 0; i < sex.Length; i++)
                 {
-                    if (sex[i] < 500)
+                    if (sex[i] > 500)
                     {
                         Log(sex[i] + " ");
                     }
@@ -43,19 +43,25 @@ internal class Program
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 foreach (var i in sex)
                 {
-                    if (i < arraySum)
+                    if (i < arrayAverage)
                     {
                         Log(i + " ");
                     }
                 }
                 Console.ResetColor();
+
                 
-                LogLine("\n \nSum of all array values: " + arraySum);
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Log(arraySum.ToString());
-                Log("Array average: " + arrayAverage);
-                Log(arrayAverage)
-                Console.ResetColor();
+                foreach (var i in sex)
+                {
+                    if (i % 5 == 0)
+                    {
+                        Log(i + " ");
+                    }
+                }
+                
+                ColoredValue("\n \nSum of all array values: ", ConsoleColor.Magenta, arraySum);
+                ColoredValue("Array average: ", ConsoleColor.Magenta, arrayAverage);
+                
                 break;
         }
         

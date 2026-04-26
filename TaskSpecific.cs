@@ -34,15 +34,29 @@ public class TaskSpecific
         }
         return result;
     }
+    
+    public static void ColoredValue(string msg, ConsoleColor color, int value)
+    {
+        Log(msg);
+        Console.ForegroundColor = color;
+        Log(value + "\n");
+        Console.ResetColor();
+    }
+}
 
+public class ArrayActions
+{
     public static void ShowArray(int[] array)
     {
         LogLine("Array contents are: ");
         Console.ForegroundColor = ConsoleColor.DarkRed;
         for (int i = 0; i < array.Length; i++)
         {
-            Console.Write(array[i] + " ");
+            Log(array[i] + " ");
         } 
+        Log(null);
         Console.ResetColor();
     }
+    
+    // public static 
 }
