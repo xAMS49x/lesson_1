@@ -1,15 +1,13 @@
-using System;
-using System.IO;
 using System.Text;
 
-namespace Library
+namespace Libraries
 {
-    public class Library
+    public class GetValidateLog
     {
         // getters
         public static string GetString(string msg)
         {
-            Console.WriteLine(msg);
+            Log(msg);
             return Console.ReadLine() ?? throw new InvalidOperationException("Null exception occured.");
         }
 
@@ -28,10 +26,31 @@ namespace Library
             return Convert.ToByte(GetString(msg));
         }
         
-        public static byte GetRandom(byte min, byte max)
+        public static int GetRandom(int min, int max)
         {
             var random = new Random();
-            return (byte)random.Next(min, max);
+            return random.Next(min, max);
+        }
+
+        public static int[] GetArray()
+        {
+            var size = GetInt("Enter the size of the array: ");
+            var min = GetInt("Enter the min number value for the number generation: ");
+            var max = GetInt("Enter the max number value for the number generation:\n");
+
+            if (size <= 0)
+                throw new ArgumentException("Array size must be greater than zero!");
+
+            if (min > max)
+                throw new ArgumentException("Min value must be less than max value!");
+            
+            int[] array = new int[size];
+            for (int i = 0; i < size; i++)
+            {
+                array[i] = GetRandom(min, max + 1);
+            }
+            
+            return array;
         }
 
         // Validations
@@ -54,52 +73,26 @@ namespace Library
 
             return true;
         }
-
-        // Task-specific functions
-        public static int CoinFlip()
-        {
-            var coinToss = new Random();
-            int roll = coinToss.Next(1, 1001);
-
-            switch (roll)
-            {
-                case <= 498:
-                    return 3;
-
-                case <= 996:
-                    return 1;
-
-                default:
-                    return 10;
-            }
-        }
-
-        
-
-        public static short DiceRoll(string name, byte die1, byte die2, byte result)
-        {
-            Log($"{name} throws the dice!");
-            
-            for(int i = 1; i <= 4; i++)
-            {
-                Log($"{name} rolled: {die1} and {die2}\n");
-                result = (byte)(die1 + die2);
-            }
-            return result;
-        }
+       
         
         // Logger (AWS (Ask, Write, Save))
         public static StringBuilder log = new StringBuilder();
 
+        public static void LogLine(string message)
+        {
+            GetString(message);
+            log.AppendLine($"<program> {message}");
+        }
+        
         public static void Log(string message)
         {
-            Console.WriteLine(message);
+            GetString(message);
             log.AppendLine($"<program> {message}");
         }
 
         public static string Ask(string prompt)
         {
-            Console.WriteLine(prompt);
+            GetString(prompt);
             log.Append($"<program> {prompt}");
 
             string input = Console.ReadLine()!;

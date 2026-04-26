@@ -1,4 +1,4 @@
-using static Library.Library;
+using static Libraries.GetValidateLog;
 
 namespace characters;
 

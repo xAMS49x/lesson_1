@@ -1,121 +1,64 @@
-﻿using System;
-using characters;
-using static Library.Library;
+﻿using static Libraries.GetValidateLog;
+using static Libraries.TaskSpecific;
 
-namespace Homework4
+namespace Homework4;
+
+internal class Program
 {
-    internal class Program
+    static void Main()
     {
-        static void Main()
+        byte task = GetBytes("Welcome back. Choose the task you want to see (1-3): ");
+        if (!ValidateRange(task, 1, 3)) throw new Exception("No such task number.");
+
+        switch (task)
         {
-            byte task = GetBytes("Welcome back. Choose the task you want to see (1-3): ");
-            if (!ValidateRange(task, 1, 3)) throw new Exception("No such task number.");
+            case 1:
+                // Task 1
+                LogLine("Task: Array operations.\n Commencing the sequence...");
+                int[] sex = GetArray();
+                ShowArray(sex);
 
-            switch (task)
-            {
-                case 1:
-                    // Task 1
-                    Log("Let's play some dice!");
-                    var player1 = new DicePlayer(Ask("Enter the name of first player"));
-                    if (ValidateStringLength(player1.ToString() ?? throw new InvalidOperationException(), 0, 50)) throw new Exception("Invalid name.");
+                Array.Sort(sex);
+                Array.Reverse(sex);
 
-                    var player2 = new DicePlayer(Ask("Enter the name of second player"));
-                    if (ValidateStringLength(player2.ToString() ?? throw new InvalidOperationException(), 0, 50)) throw new Exception("Invalid name.");
+                //operations
+                LogLine("\n \n============= Array operations =============");
+                int arraySum = 0;
 
-                    // Game
-                    for (var round = 1; round <= 10; round++)
+                LogLine("\nValues greater than 500:");
+                Console.ForegroundColor = ConsoleColor.Green;
+                for (var i = 0; i < sex.Length; i++)
+                {
+                    if (sex[i] < 500)
                     {
-                        var gamePoints1 = player1.RollDice();
-                        var gamePoints2 = player2.RollDice();
-
-                        if (gamePoints1 > gamePoints2)
-                        {
-                            Log(player1.Name + " has won " + round + " round!");
-                            Log("__________________________");
-                        }
-
-                        else if (gamePoints1 < gamePoints2)
-                        {
-                            Log(player2.Name + " has won " + round + " round!");
-                            Log("__________________________");
-                        }
-
-                        else
-                        {
-                            Log("Round tie!");
-                            Log("__________________________");
-                        }
+                        Log(sex[i] + " ");
                     }
 
-                    if (player1.DiceRollScore > player2.DiceRollScore)
+                    arraySum += sex[i];
+                }
+                Console.ResetColor();
+
+                int arrayAverage = arraySum / sex.Length;
+                LogLine("\n \nArray values less than average (" + arrayAverage + "):");
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                foreach (var i in sex)
+                {
+                    if (i < arraySum)
                     {
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Log($"{player1.Name} has won the game with {player1.DiceRollScore} score!");
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Log($"{player2.Name} has lost the game with {player2.DiceRollScore} score!");
-                        Console.ResetColor();
+                        Log(i + " ");
                     }
-                    else if (player1.DiceRollScore < player2.DiceRollScore)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Log($"{player2.Name} has won the game with {player2.DiceRollScore} score!");
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Log($"{player1.Name} has lost the game with {player1.DiceRollScore} score!");
-                        Console.ResetColor();
-                    }
-                    else
-                    {
-                        Log("Both players drew!");
-                    }
-
-                    SaveLog(0);
-
-                    break;
-
-                case 2:
-
-                    static void ShowHealth(Character player1, Character player2)
-                    {
-                        Log($"Health of {player1.Name}: {player1.Health}");
-                        Log($"Health of {player2.Name}: {player2.Health}");
-                    }
-
-                    Random random = new Random();
-
-                    Character hero1 = new Character(Ask("Enter the name for first character"), 2000, 120, 40, 5, 10);
-
-                    Character hero2 = new Character(Ask("Enter the name for second character"), 1500, 90, 25, 30, 30);
-
-                    int roundSecondGame = 1;
-
-                    while (hero1.IsAlive && hero2.IsAlive)
-                    {
-                        Log($"\nRound {roundSecondGame}!\n");
-
-                        hero1.AttackDefender(hero2, random);
-
-                        if (!hero2.IsAlive)
-                        {
-                            ShowHealth(hero1, hero2);
-                            break;
-                        }
-
-                        hero2.AttackDefender(hero1, random);
-
-                        ShowHealth(hero1, hero2);
-
-                        roundSecondGame++;
-                    }
-
-                    Log("\nFight's over!");
-
-                    if (hero1.IsAlive)
-                        Log($"Winner: {hero1.Name}");
-                    else
-                        Log($"Winner: {hero2.Name}");
-
-                    break;
-            }
+                }
+                Console.ResetColor();
+                
+                LogLine("\n \nSum of all array values: " + arraySum);
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Log(arraySum.ToString());
+                Log("Array average: " + arrayAverage);
+                Log(arrayAverage)
+                Console.ResetColor();
+                break;
         }
+        
+        SaveLog(0);
     }
 }
