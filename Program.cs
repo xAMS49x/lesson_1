@@ -17,17 +17,16 @@ internal class Program
         Array.Sort(arrayUser);
         Array.Reverse(arrayUser);
         ShowArray(arrayUser);
-        
+
 
         while (true)
         {
             LogLine(
                 "\n \n=========================================== Array operations ===========================================");
             byte operation = Convert.ToByte(Ask("Choose operation you want to perform (1-12, 0 - exit):"));
-            
+
             switch (operation)
             {
-                
                 case 0: LogLine("Closing..."); break;
                 case 1:
                     GreaterThan500(arrayUser);
@@ -65,12 +64,12 @@ internal class Program
                 case 12:
                     NumbersContaining7(arrayUser);
                     break;
-                
+
                 default:
                     LogLine("Invalid choice.");
                     break;
             }
-            
+
             RepeatFunctionBlock("Return to menu? (y)");
             SaveLog(0);
         }
