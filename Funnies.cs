@@ -15,7 +15,7 @@ public class Funnies
     
     public static void PhraseChoice()
     {
-        int choice = GetRandom(1, 16);
+        int choice = GetRandom(1, 17);
         
         switch (choice)
         {
@@ -77,6 +77,10 @@ public class Funnies
             
             case 15:
                 PhraseMsg("Power awaits those, who take command!");
+                break;
+            
+            case 16: 
+                PhraseMsg("\"Microsoft isn't evil, they just make really crappy operating systems.\" - Linus Torvalds");
                 break;
         }
     }
