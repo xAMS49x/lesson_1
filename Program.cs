@@ -1,6 +1,5 @@
 ﻿using static Libraries.GetValidateLog;
 using static Libraries.TaskSpecific;
-using static Libraries.ArrayActions;
 using static Libraries.Funnies;
 using static Libraries.ListActions;
 
@@ -29,9 +28,10 @@ internal class Program
 
             case 2:
 
+                List<string> products = new List<string>();
                 while (true)
                 {
-                    List<string> products = new List<string>();
+                    Console.Clear();
                     LogLine(
                         "\n===== Product list menu =====\n1. Add item to list \n2. Remove item from list \n3. Show list \n0. Exit \n");
                     var operation = Convert.ToByte(Ask("Choose an option: "));
@@ -50,12 +50,18 @@ internal class Program
                             continue;
                         default:
                             LogLine("Invalid choice.");
-                            break;
+                            continue;
                     }
 
                     break;
                 }
 
+                break;
+            
+            case 3:
+                
+                
+                
                 break;
         }
 

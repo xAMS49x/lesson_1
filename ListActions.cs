@@ -10,7 +10,7 @@ public class ListActions
         Console.Clear();
         list.Add(GetString("Name the item you want to add to list: "));
         LogLine("Item added to the list.");
-        Console.ReadKey();
+        PressAnyKeyToContinue();
     }
 
     public static void RemoveFromList(List<string> list)
@@ -20,13 +20,13 @@ public class ListActions
         {
             Console.ForegroundColor = ConsoleColor.Green;
             LogLine("Item removed from the list.");
-            Console.ReadKey();
+            PressAnyKeyToContinue();
         }
         else
         {
             Console.ForegroundColor = ConsoleColor.Red;
             LogLine("Item could not be removed from the list.");
-            Console.ReadKey();
+            PressAnyKeyToContinue();
         }
     }
 
@@ -35,5 +35,6 @@ public class ListActions
         Console.Clear();
         LogLine("List contents: ");
         list.ForEach(item  => LogLine(item));
+        PressAnyKeyToContinue();
     }
 }

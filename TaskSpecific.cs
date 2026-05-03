@@ -61,6 +61,11 @@ public class TaskSpecific
         if (Console.ReadKey().Key != ConsoleKey.Y) return;
         LogLine("\n");
     }
-    
-    
+
+    public static void PressAnyKeyToContinue()
+    {
+        LogLine("Press any key to continue...");
+        Console.ReadKey();
+        Console.Clear();
+    }
 }
