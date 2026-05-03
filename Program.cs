@@ -2,78 +2,64 @@
 using static Libraries.TaskSpecific;
 using static Libraries.ArrayActions;
 using static Libraries.Funnies;
+using static Libraries.ListActions;
 
-namespace Homework4;
+namespace Homework_6;
 
 internal class Program
 {
     private static void Main()
     {
-        PhraseChoice();
-        LogLine("Welcome back. Only one task today, eh?");
+        FunnyPhrase();
+        byte taskNumber = GetBytes("Welcome back. Choose the task (1-3): ");
 
-        LogLine("Task: Array operations.\n Commencing the sequence...");
-        int[] arrayUser = GetArray();
-        Array.Sort(arrayUser);
-        Array.Reverse(arrayUser);
-        ShowArray(arrayUser);
-
-
-        while (true)
+        switch (taskNumber)
         {
-            LogLine(
-                "\n \n=========================================== Array operations ===========================================");
-            byte operation = Convert.ToByte(Ask("Choose operation you want to perform (1-12, 0 - exit):"));
+            case 1:
 
-            switch (operation)
-            {
-                case 0: LogLine("Closing..."); break;
-                case 1:
-                    GreaterThan500(arrayUser);
-                    break;
-                case 2:
-                    Sum(arrayUser);
-                    break;
-                case 3:
-                    Average(arrayUser);
-                    break;
-                case 4:
-                    LessThanAverage(arrayUser);
-                    break;
-                case 5:
-                    MultipliesOf5(arrayUser);
-                    break;
-                case 6:
-                    EvenNumbers(arrayUser);
-                    break;
-                case 7:
-                    GreatestSmallestNumbers(arrayUser);
-                    break;
-                case 8:
-                    Within500To600RangeCount(arrayUser);
-                    break;
-                case 9:
-                    Number899IsInArray(arrayUser);
-                    break;
-                case 10:
-                    SumOf100To200RangeValues(arrayUser);
-                    break;
-                case 11:
-                    SecondLargest(arrayUser);
-                    break;
-                case 12:
-                    NumbersContaining7(arrayUser);
-                    break;
+                List<int> numbers = new List<int>();
 
-                default:
-                    LogLine("Invalid choice.");
-                    break;
-            }
+                while (!numbers.Contains(99))
+                {
+                    numbers.Add(GetRandom(10, 101));
+                }
 
-            RepeatFunctionBlock("Return to menu? (y)");
-            SaveLog(0);
+                Log("Element count before 99: " + (numbers.Count - 1));
+                break;
+
+            case 2:
+
+                while (true)
+                {
+                    List<string> products = new List<string>();
+                    LogLine(
+                        "\n===== Product list menu =====\n1. Add item to list \n2. Remove item from list \n3. Show list \n0. Exit \n");
+                    var operation = Convert.ToByte(Ask("Choose an option: "));
+
+                    switch (operation)
+                    {
+                        case 0: LogLine("Closing..."); break;
+                        case 1:
+                            AddToList(products);
+                            continue;
+                        case 2:
+                            RemoveFromList(products);
+                            continue;
+                        case 3:
+                            ListContents(products);
+                            continue;
+                        default:
+                            LogLine("Invalid choice.");
+                            break;
+                    }
+
+                    break;
+                }
+
+                break;
         }
-        // Assembled!
+
+        SaveLog(0);
     }
 }
 //AMS49 (GitHub: xAMS49x). ALL RIGHTS RESERVED.

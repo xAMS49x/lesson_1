@@ -13,7 +13,7 @@ public class Funnies
         
     }
     
-    public static void PhraseChoice()
+    public static void FunnyPhrase()
     {
         int choice = GetRandom(1, 17);
         
