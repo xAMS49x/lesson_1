@@ -7,7 +7,7 @@ namespace Libraries
         // getters
         public static string GetString(string msg)
         {
-            return Ask(msg) ?? throw new InvalidOperationException("Null exception occured.");
+            return Ask(msg) ?? throw new InvalidOperationException();
         }
 
         public static int GetInt(string msg)

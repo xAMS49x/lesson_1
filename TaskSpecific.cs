@@ -64,7 +64,7 @@ public class TaskSpecific
 
     public static void PressAnyKeyToContinue()
     {
-        LogLine("Press any key to continue...");
+        LogLine("\nPress any key to continue...");
         Console.ReadKey();
         Console.Clear();
     }

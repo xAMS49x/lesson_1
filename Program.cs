@@ -1,7 +1,8 @@
-﻿using static Libraries.GetValidateLog;
-using static Libraries.TaskSpecific;
+﻿using Libraries;
+using static Libraries.GetValidateLog;
 using static Libraries.Funnies;
 using static Libraries.ListActions;
+using static Libraries.StudentListActions;
 
 namespace Homework_6;
 
@@ -57,11 +58,38 @@ internal class Program
                 }
 
                 break;
-            
+
             case 3:
-                
-                
-                
+
+                List<Student> students = new List<Student>();
+
+                while (true)
+                {
+                    Console.Clear();
+                    LogLine(
+                        "\n===== Student list menu =====\n1. Add student to list \n2. Search student by name \n3. List all students \n0. Exit \n");
+                    var operation = Convert.ToByte(Ask("Choose an option: "));
+
+                    switch (operation)
+                    {
+                        case 0: LogLine("Closing..."); break;
+                        case 1:
+                            AddStudent(students);
+                            continue;
+                        case 2:
+                            SearchStudentByName(students);
+                            continue;
+                        case 3:
+                            ListStudents(students);
+                            continue;
+                        default:
+                            LogLine("Invalid choice.");
+                            continue;
+                    }
+
+                    break;
+                }
+
                 break;
         }
 
